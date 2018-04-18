@@ -46,22 +46,17 @@ void loop() {
   inB=analogRead(nerveB);
   inH=analogRead(nerveH);
   inT=analogRead(nerveT);
-  inB=constrain(inB,0,30);
-  inH=constrain(inH,1,40);
-  inT=constrain(inT,1,30); //Limit because the scale is wonky
-  if(abs(preT-inT)<3) inT=preT;
-  else preT=inT;
   //scaled motor logic
-  if (inB>1) inB=map(inB,1,30,50,100);
+  if (inB>10) inB=map(inB,10,1024,35,100);
   else inB=0;
   analogWrite(fwd,inB);
   //Scaled logic heart
-  HeartRate=map(inH,0,40,70,160);
+  HeartRate=map(inH,0,1024,50,170);
   hrMillis = 60000 / HeartRate; //Beats per Minute, divided my seconds per minute, times millis per second
   beatMillis = (hrMillis * interBeat) / 100; //hrMillis reduced to the percentage of interBeat. This is mostly for testing to get the right "Feel"
   Heart();
   //Scaled logic tail
-  inT=map(inT,1,30,1,60);
+  inT=map(inT,0,1024,0,60);
   float interval=inT*0.0001;
   theta +=interval;
   pos=90 + 80 * sin (theta);
